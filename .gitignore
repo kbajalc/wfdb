@@ -4,6 +4,8 @@
 *.so.*
 *.orig
 *.rej
+*.dSYM
+*.dylib
 Makefile
 
 config.cache
