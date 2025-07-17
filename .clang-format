@@ -1,0 +1,19 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+# UseTab: Always
+ColumnLimit: 150
+AllowShortIfStatementsOnASingleLine: true
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: true
+
+# BreakBeforeBraces: Attach
+# BinPackArguments: true
+# BinPackParameters: true
+# PenaltyBreakBeforeFirstCallParameter: 10000
+# PenaltyBreakString: 10000
+# PenaltyExcessCharacter: 10000
+# PenaltyReturnTypeOnItsOwnLine: 10000
+# PenaltyBreakFunctionDefinition: 10000
+# PenaltyBreakBeforeFunctionBody: 10000

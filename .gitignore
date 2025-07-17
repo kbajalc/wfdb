@@ -6,7 +6,7 @@
 *.rej
 *.dSYM
 *.dylib
-Makefile
+# Makefile
 
 config.cache
 conf/prompt

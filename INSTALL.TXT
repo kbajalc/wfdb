@@ -65,6 +65,11 @@ Brief notes about other platforms are at the end of this file.
 
 BUILDING AND INSTALLING
 
+cp /usr/local/opt/curl/lib/libcurl.4.dylib ./build/lib
+
+export DYLD_LIBRARY_PATH="$(brew --prefix curl)/lib:$DYLD_LIBRARY_PATH"
+
+
 Once you have installed the necessary prerequisites, the WFDB installation
 process is the same on all platforms:
 
