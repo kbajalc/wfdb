@@ -167,16 +167,12 @@ int main(int argc, char **argv) {
                 }
                 to = i;
                 break;
-            case 'v': /* show column headings */
-                vflag = 1;
-                break;
+            case 'v': /* show column headings */ vflag = 1; break;
             case 'x': /* use alternate time format */
                 xflag = 1;
                 eflag = 0;
                 break;
-            default:
-                (void)fprintf(stderr, "%s: unrecognized option %s\n", pname, argv[i]);
-                exit(1);
+            default: (void)fprintf(stderr, "%s: unrecognized option %s\n", pname, argv[i]); exit(1);
             }
         else {
             (void)fprintf(stderr, "%s: unrecognized argument %s\n", pname, argv[i]);
@@ -279,11 +275,13 @@ int main(int argc, char **argv) {
             if (sample_num > annot.time * sps / tps + 0.5) sample_num--;
         }
         if (to != 0L && sample_num > to) break;
-        if ((flag[0] || (isann(annot.anntyp) && flag[annot.anntyp])) && (cflag == 0 || annot.chan == chanmatch) && (nflag == 0 || annot.num == nummatch) && (sflag == 0 || annot.subtyp == submatch)) {
+        if ((flag[0] || (isann(annot.anntyp) && flag[annot.anntyp])) && (cflag == 0 || annot.chan == chanmatch) &&
+            (nflag == 0 || annot.num == nummatch) && (sflag == 0 || annot.subtyp == submatch)) {
             if (eflag)
                 (void)printf("%s  %7" WFDB_Pd_TIME, mstimstr(annot.time), sample_num);
             else if (xflag)
-                (void)printf("%*.*f %*.*f %*.*f", sprec + 6, sprec, annot.time / tps, mprec + 4, mprec, annot.time / tpm, hprec + 2, hprec, annot.time / tph);
+                (void)printf("%*.*f %*.*f %*.*f", sprec + 6, sprec, annot.time / tps, mprec + 4, mprec, annot.time / tpm, hprec + 2, hprec,
+                             annot.time / tph);
             else
                 (void)printf("%s  %7" WFDB_Pd_TIME, mstimstr(-annot.time), sample_num);
             (void)printf("%6s%5d%5d%5d", annstr(annot.anntyp), annot.subtyp, annot.chan, annot.num);
@@ -312,7 +310,20 @@ static char *prog_name(char *s) {
     return (p + 1);
 }
 
-static char *help_strings[] = {"usage: %s -r RECORD -a ANNOTATOR [OPTIONS ...]\n", "where RECORD and ANNOTATOR specify the input, and OPTIONS may include:", " -c CHAN             print annotations with specified CHAN only", " -e                  * show annotation times as elapsed times", " -f TIME             start at specified TIME", " -h                  print this usage summary", " -n NUM              print annotations with specified NUM only", " -p TYPE [TYPE ...]  print annotations of specified TYPEs only", " -s SUBTYPE          print annotations with specified SUBTYPE only", " -t TIME             stop at specified TIME", " -v                  print column headings", " -x                  * use alternate time format (seconds, minutes, hours)", "* Only one of -e and -x can be used.", NULL};
+static char *help_strings[] = {"usage: %s -r RECORD -a ANNOTATOR [OPTIONS ...]\n",
+                               "where RECORD and ANNOTATOR specify the input, and OPTIONS may include:",
+                               " -c CHAN             print annotations with specified CHAN only",
+                               " -e                  * show annotation times as elapsed times",
+                               " -f TIME             start at specified TIME",
+                               " -h                  print this usage summary",
+                               " -n NUM              print annotations with specified NUM only",
+                               " -p TYPE [TYPE ...]  print annotations of specified TYPEs only",
+                               " -s SUBTYPE          print annotations with specified SUBTYPE only",
+                               " -t TIME             stop at specified TIME",
+                               " -v                  print column headings",
+                               " -x                  * use alternate time format (seconds, minutes, hours)",
+                               "* Only one of -e and -x can be used.",
+                               NULL};
 
 static void help() {
     int i;
