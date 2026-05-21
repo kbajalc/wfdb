@@ -83,10 +83,10 @@ WAVEVERSION = 6.12
 
 PACKAGE = exg-wfdb
 SRCDIR = "/Users/kbajalc/Projects/exg-wfdb"
-LONGDATE = 28 June 2025
-SHORTDATE = JUNE 2025
-YEAR = 2025
-ARCH = x86_64-Darwin
+LONGDATE = 21 May 2026
+SHORTDATE = MAY 2026
+YEAR = 2026
+ARCH = arm64-Darwin
 BUILD_CC = $(CC)
 # _____________________________________________________________________________
 

@@ -8,5 +8,6 @@
         "**/.git": true,
         "**/.DS_Store": true,
         "**/*.dSYM": true,
-    }
+    },
+    "makefile.configureOnOpen": true
 }

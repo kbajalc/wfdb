@@ -36,6 +36,8 @@ software available for all popular platforms:
 
  * The libcurl library (including *.h files)
 
+ * On MacOS: brew install pkgconf curl flac
+
 On Debian, Ubuntu, or similar operating systems, open a terminal and run the
 command:
 	sudo apt-get install gcc make libflac-dev libcurl4-gnutls-dev
