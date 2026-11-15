@@ -61,19 +61,21 @@ static char s1[] = "Record Nn' Vn' Fn' On'  Nv   Vv  Fv' Ov' No' Vo' Fo'  Q Se  
 static char s10[] = "Record\tNn'\tVn'\tFn'\tOn'\tNv\tVv\tFv'\tOv'\tNo'\tVo'\tFo'\tQTP\tQFP\tQFN\tQER\tQSE\tQPP\tQF1\tVSE\tVPP\tVFPR\n";
 static char s2[] = "Record Nx   Vx   Fx   Qx  % beats  % N    % V    % F   Total Shutdown\n";
 static char s3[] = "Record CTs CFN CTp CFP STs SFN STp SFP LTs LFN LTp LFP  CSe C+P SSe S+P LSe L+P\n";
-static char s4[] = "Record Nn' Sn' Vn' Fn' On'  Ns  Ss  Vs  Fs' Os' Nv  Sv   Vv  Fv' Ov' No' So' Vo' Fo'  Q Se   Q +P   V Se   V +P   S Se   S +P RR err\n";
-static char s40[] = "Record\tNn'\tSn'\tVn'\tFn'\tOn'\tNs\tSs\tVs\tFs'\tOs'\tNv\tSv\tVv\tFv'\tOv'\tNo'\tSo'\tVo'\tFo'\tQTP\tQFP\tQFN\tQER\tQSE\tQPP\tQF1\tVSE\tVPP\tSSE\tSPP\tRRerr\n";
+static char s4[] =
+    "Record Nn' Sn' Vn' Fn' On'  Ns  Ss  Vs  Fs' Os' Nv  Sv   Vv  Fv' Ov' No' So' Vo' Fo'  Q Se   Q +P   V Se   V +P   S Se   S +P RR err\n";
+static char s40[] = "Record\tNn'\tSn'\tVn'\tFn'\tOn'\tNs\tSs\tVs\tFs'\tOs'\tNv\tSv\tVv\tFv'\tOv'\tNo'\tSo'\tVo'\tFo'"
+                    "\tQTP\tQFP\tQFN\tQER\tQSE\tQPP\tQF1\tVSE\tVPP\tSSE\tSPP\tRRerr\n";
 // "Record	Nn'	Sn'	Vn'	Fn'	On'	Ns	Ss	Vs	Fs'	Os'	Nv	Sv	Vv	Fv'	Ov'	No'	So'	Vo'	Fo'	QSe	Q+P	VSe	V+P	SSe	S+P	RRerr\n";
 static char s5[] = "Record Nx   Sx   Vx   Fx   Qx  % beats  % N    % S    % V    % F   Total Shutdown\n";
 // static char s50[] = "Record\tNx\tSx\tVx\tFx\tQx\t% beats\t% N\t% S\t% V\t% F\tTotal Shutdown\n";
 static char s6[] = "(SVE run detection)\n";
 static char s7a[] = "(AF detection)\n";
+static char s7n[] = "(NOISE detection)\n";
 static char s7b[] = "(VF detection)\n";
 static char s7c[] = "(Ischemic ST detection, both signals)\n";
 static char s7d[] = "(Ischemic ST detection, signal 0)\n";
 static char s7e[] = "(Ischemic ST detection, signal 1)\n";
 static char s8[] = "(Measurement errors)\n";
-
 
 static int unpack(int type, char *s);
 static void pstat(char *s, double a, double b);
@@ -123,6 +125,8 @@ int sumstat_main(int argc, char *argv[]) {
         type = 6; /* rxr SVE run-by-run report */
     else if (strcmp(s, s7a) == 0)
         type = 7; /* epic AF report */
+    else if (strcmp(s, s7n) == 0)
+        type = 7; /* epic NOISE report */
     else if (strcmp(s, s7b) == 0)
         type = 7; /* epic VF report */
     else if (strcmp(s, s7c) == 0)
@@ -214,7 +218,9 @@ int sumstat_main(int argc, char *argv[]) {
     case 6: /* rxr SVE run-by-run table */
         (void)printf("______________________________________________________");
         (void)printf("_______________________\n");
-        (void)printf("Sum   %4" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr "\n", CTS, CFN, CTP, CFP, STS, SFN, STP, SFP, LTS, LFN, LTP, LFP);
+        (void)printf("Sum   %4" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr " %3" pctr
+                     " %3" pctr "\n",
+                     CTS, CFN, CTP, CFP, STS, SFN, STP, SFP, LTS, LFN, LTP, LFP);
         (void)printf("Gross                                                  ");
         rstat(" %3.0f", (double)CTS, (double)(CTS + CFN));
         rstat(" %3.0f", (double)CTP, (double)(CTP + CFP));
@@ -259,13 +265,16 @@ int sumstat_main(int argc, char *argv[]) {
         pstat(" %6.2f", CSVS, (double)NSVS);
         pstat(" %6.2f", CSVP, (double)NSVP);
         pstat(" %6.2f", CRRE / 100.0, (double)NRRE);
-        (void)printf("\nTotal QRS complexes: %" pctr "  Total VEBs: %" pctr "  Total SVEBs: %" pctr "\n", QTP + QFN, Vn + Vs + Vv + Vo, Sn + Ss + Sv + So);
+        (void)printf("\nTotal QRS complexes: %" pctr "  Total VEBs: %" pctr "  Total SVEBs: %" pctr "\n", QTP + QFN, Vn + Vs + Vv + Vo,
+                     Sn + Ss + Sv + So);
         if (CUSTOM) {
-            printf("____________________________________________________________________________________________________________________________________\n");
+            printf("_________________________________________________________________________________________________________________________________"
+                   "___\n");
             double se = (double)QTP / (double)(QTP + QFN);
             double pp = (double)QTP / (double)(QTP + QFP);
             double f1 = 2 * se * pp / (se + pp);
-            (void)printf("QTP: %ld, QFP: %ld, QFN: %ld, QER: %ld :: QSE: %.2f, QPP: %.2f, QF1: %.2f\n", QTP, QFP, QFN, QFP + QFN, se * 100, pp * 100, f1 * 100);
+            (void)printf("QTP: %ld, QFP: %ld, QFN: %ld, QER: %ld :: QSE: %.2f, QPP: %.2f, QF1: %.2f\n", QTP, QFP, QFN, QFP + QFN, se * 100, pp * 100,
+                         f1 * 100);
         }
         break;
     case 5: /* bxb -L shutdown report */
@@ -301,7 +310,7 @@ int sumstat_main(int argc, char *argv[]) {
         break;
     }
     (void)printf("\nSummary of results from %d record%s\n", nrec, nrec == 1 ? "" : "s");
-    return(0); /*NOTREACHED*/
+    return (0); /*NOTREACHED*/
 }
 
 /* `unpack' interprets a line from the input file. */
@@ -322,7 +331,8 @@ static int unpack(int type, char *s) {
     switch (type) {
     case 1: /* bxb beat-by-beat report */
         fo = -1L;
-        (void)sscanf(s, "%s%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "", rec, &nn, &vn, &fn, &on, &nv, &vv, &fv, &ov, &no, &vo, &fo);
+        (void)sscanf(s, "%s%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "", rec, &nn, &vn, &fn,
+                     &on, &nv, &vv, &fv, &ov, &no, &vo, &fo);
         if (fo < 0L) return (0);
         Nn += nn;
         Vn += vn;
@@ -440,9 +450,17 @@ static int unpack(int type, char *s) {
     case 4: /* bxb -L beat-by-beat report */
         fo = -1L;
         if (CUSTOM) {
-            (void)sscanf(s, "%s%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%s%s%s%s%s%s%s%s%s%s%s%s", rec, &nn, &sn, &vn, &fn, &on, &ns, &ss, &vs, &fs, &os, &nv, &sv, &vv, &fv, &ov, &no, &so, &vo, &fo, qtp, qfp, qfn, qer, qse, qpp, qf1, vse, vpp, sse, spp, srre);
+            (void)sscanf(s,
+                         "%s%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr
+                         "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%s%s%s%s%s%s%s%s%s%s%s%s",
+                         rec, &nn, &sn, &vn, &fn, &on, &ns, &ss, &vs, &fs, &os, &nv, &sv, &vv, &fv, &ov, &no, &so, &vo, &fo, qtp, qfp, qfn, qer, qse,
+                         qpp, qf1, vse, vpp, sse, spp, srre);
         } else {
-            (void)sscanf(s, "%s%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%s%s%s%s%s%s%s", rec, &nn, &sn, &vn, &fn, &on, &ns, &ss, &vs, &fs, &os, &nv, &sv, &vv, &fv, &ov, &no, &so, &vo, &fo, qse, qpp, vse, vpp, sse, spp, srre);
+            (void)sscanf(s,
+                         "%s%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr
+                         "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%" sctr "%s%s%s%s%s%s%s",
+                         rec, &nn, &sn, &vn, &fn, &on, &ns, &ss, &vs, &fs, &os, &nv, &sv, &vv, &fv, &ov, &no, &so, &vo, &fo, qse, qpp, vse, vpp, sse,
+                         spp, srre);
         }
         if (fo < 0L) return (0);
         Nn += nn;
@@ -465,11 +483,13 @@ static int unpack(int type, char *s) {
         Vo += vo;
         Fo += fo;
         if (nn + ns + nv + no + sn + ss + sv + so + vn + vs + vv + vo + fn + fs + fv + fo) {
-            CQS += (nn + ns + nv + sn + ss + sv + vn + vs + vv + fn + fs + fv) / (double)(nn + ns + nv + no + sn + ss + sv + so + vn + vs + vv + vo + fn + fs + fv + fo);
+            CQS += (nn + ns + nv + sn + ss + sv + vn + vs + vv + fn + fs + fv) /
+                   (double)(nn + ns + nv + no + sn + ss + sv + so + vn + vs + vv + vo + fn + fs + fv + fo);
             NQS++;
         }
         if (nn + sn + vn + fn + on + ns + ss + vs + fs + os + nv + sv + vv + fv + ov) {
-            CQP += (nn + sn + vn + fn + ns + ss + vs + fs + nv + sv + vv + fv) / (double)(nn + sn + vn + fn + on + ns + ss + vs + fs + os + nv + sv + vv + fv + ov);
+            CQP += (nn + sn + vn + fn + ns + ss + vs + fs + nv + sv + vv + fv) /
+                   (double)(nn + sn + vn + fn + on + ns + ss + vs + fs + os + nv + sv + vv + fv + ov);
             NQP++;
         }
         if (vn + vs + vv + vo) {
@@ -589,5 +609,7 @@ static char *prog_name(char *s) {
 }
 
 #ifndef GOLIB
-int main(int argc, char **argv) { return (sumstat_main(argc, argv)); }
+int main(int argc, char **argv) {
+    return (sumstat_main(argc, argv));
+}
 #endif
