@@ -890,7 +890,7 @@ char *argv[];
         exit(1);
     }
 
-    printf("Record: %s\n", record);
+    // printf("Record: %s\n", record);
 
     if (start_time != 0L || end_time != 0L || min_length != 0) (void)fprintf(stderr, "%s: (warning) nonstandard comparison selected\n", pname);
 
