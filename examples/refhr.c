@@ -28,7 +28,7 @@ Any MEASURE annotations in the input file are not copied.  The output of this
 program is suitable for input to `mxm'.
 */
 
-// cc -lwfdb -Wl,-rpath,/usr/local/lib examples/refhr.c -o refhr
+// cc -lwfdb -Wl examples/refhr.c -o refhr
 
 #include "wfdb/ecgcodes.h"
 #include <stdio.h>
